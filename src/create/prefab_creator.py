@@ -15,6 +15,4 @@ def crear_cuadrado(ecs_world:esper.World,size:pygame.Vector2,
      ecs_world.add_component(cuad_entity,
                                      CVelocity(vel=vel)
                                     )
-def crear_enemigos(ecs_world:esper.World):
-      ene_entity =ecs_world.create_entity()
-      ecs_world.add_component(ene_entity,CEnemySpawner)
+

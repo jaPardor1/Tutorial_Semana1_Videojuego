@@ -7,6 +7,7 @@ from src.create.prefab_creator import crear_cuadrado
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
 from src.ecs.components.c_velocity import CVelocity
+from src.ecs.systems.s_enemy_spawner import system_enemy_spawner
 from src.ecs.systems.s_movement import  system_screen_movement
 from src.ecs.systems.s_rendering import system_rendering
 from src.ecs.systems.s_screen_bounce import system_screen_bounce
@@ -15,21 +16,21 @@ class GameEngine:
     def __init__(self) -> None:
         pygame.init()
         data_window= extraer_datos_json('assets/cfg/window.json')
-        window_width= data_window["window"].get('size').get('w')
-        window_height= data_window["window"].get('size').get('h')
-        window_title= data_window["window"].get('title')
-        window_framerate= data_window["window"].get('framerate')
-        self.r =data_window["window"].get('bg_color').get('r') 
-        self.g =data_window["window"].get('bg_color').get('g') 
-        self.b =data_window["window"].get('bg_color').get('b')
+        window_width= data_window.get('size').get('w')
+        window_height= data_window.get('size').get('h')
+        window_title= data_window.get('title')
+        window_framerate= data_window.get('framerate')
+        #self.r =data_window["window"].get('bg_color').get('r') 
+        #self.g =data_window["window"].get('bg_color').get('g') 
+        #self.b =data_window["window"].get('bg_color').get('b')
 
-
-
-
-         
-
+        self.r =data_window.get('bg_color').get('r') 
+        self.g =data_window.get('bg_color').get('g') 
+        self.b =data_window.get('bg_color').get('b')
         
-        
+        self.level_info = extraer_datos_json('assets/cfg/level_01.json')
+        self.enemies_info = extraer_datos_json('assets/cfg/enemies.json')
+
         self.screen = pygame.display.set_mode((window_width,window_height),pygame.SCALED)#visualizacion de la ventaqna para que se vea bien.
         pygame.display.set_caption(window_title)
         self.clock = pygame.time.Clock()
@@ -52,15 +53,7 @@ class GameEngine:
         self._clean()
 
     def _create(self):
-
-        crear_cuadrado(self.ecs_world, pygame.Vector2(50,50),pygame.Vector2(150,100),pygame.Vector2(100,100),pygame.Color(255,255,199))
-        
-
-        
-
-
-
-    
+        system_enemy_spawner(self.ecs_world,self.level_info,self.enemies_info)
 
     def _calculate_time(self):
         self.clock.tick(self.framerate)

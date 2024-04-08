@@ -1,7 +1,4 @@
 
-
-
-
 class CEnemySpawner:
-    def __init__(self) -> None:
-        pass
+    def __init__(self,level) -> None:
+        self.level_info = level
